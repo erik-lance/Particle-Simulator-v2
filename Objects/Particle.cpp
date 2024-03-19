@@ -47,55 +47,6 @@ void Particle::handleScreenCollision()
 }
 
 /**
- * Handles the particles collision given a line by checking if
- * there is an intersection between the particle and the line
- * @param line The line to check for collision
- * @return True if there is a collision, false otherwise
- */
-bool Particle::handleLineCollision(Line line)
-{
-	// Check if particle's old and new position intersects with the line
-	bool collided = false;
-
-	Line particle_line = {old_position, position};
-
-	Position intersection = lineIntersection(line, particle_line);
-
-	if (intersection.x != 0 && intersection.y != 0)
-	{
-		collided = true;
-	}
-
-	// Distance of new position to intersection point
-	int distance = (int)sqrt(pow(position.x - intersection.x, 2) + pow(position.y - intersection.y, 2));
-	
-
-	// Update the particle's position to the intersection point and adjust the angle
-	if (collided)
-	{
-		// Update the particle's position to the intersection point
-		position.x = intersection.x;
-		position.y = intersection.y;
-
-		// Reflect the particle's angle based on the line's angle in Radians with a simple reflection formula
-		p_angle = reflectAngle(p_angle, line.angle);
-
-		// Add radius to distance
-		distance += radius + 2;
-		
-		// And then move the position by the distance
-		position.x += (int)(distance * cos(p_angle));
-		position.y += (int)(distance * sin(p_angle));
-
-		// To offset radius
-
-		return true;
-	}
-
-	return false;
-}
-
-/**
  * @brief Draws the particle
  * @details This function draws the particle
  */

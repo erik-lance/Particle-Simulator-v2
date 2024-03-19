@@ -83,9 +83,6 @@ void ObjectManager::addWall(Line line)
 	// Add the wall to the array
 	walls[current_max_walls-1] = Wall(line);
     current_max_walls++; // Increment the counter after adding the wall
-
-    // Add to the collision manager
-    collision_manager->addWall(walls[current_max_walls-2]);
 }
 
 void ObjectManager::setupThreads()
@@ -140,7 +137,6 @@ void ObjectManager::updateAndDrawParticles(double delta, SDL_Renderer* renderer)
     for (int i = 0; i < current_max_particles; i++)
     {
         particles[i].updatePosition(delta);
-		collision_manager->checkParticleCollisionsInCells(&particles[i]);
 		particles[i].handleScreenCollision();
         particles[i].draw(renderer);
     }
@@ -207,10 +203,10 @@ void ObjectManager::drawWalls(SDL_Renderer* renderer)
  */
 void ObjectManager::drawGridLines(SDL_Renderer* renderer)
 {
-    int cell_width = collision_manager->getGridCellWidth();
-    int cell_height = collision_manager->getGridCellHeight();
-    int column_count = collision_manager->getGridColumns();
-    int row_count = collision_manager->getGridRows();
+    int column_count = 10;
+    int row_count = 10;
+    int cell_width = screen_width / column_count;
+    int cell_height = screen_height / row_count;
 
     // Set the color to gray
     SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
@@ -247,14 +243,12 @@ void ObjectManager::addDebugCircle(Position pos, int r)
 	}
 }
 
-ObjectManager::ObjectManager() { screen_width = 1280; screen_height = 720; collision_manager = new CollisionManager(screen_width, screen_height); setupThreads(); }
+ObjectManager::ObjectManager() { screen_width = 1280; screen_height = 720; setupThreads(); }
 
 ObjectManager::ObjectManager(int width, int height)
 {
     screen_width = width;
 	screen_height = height;
-    collision_manager = new CollisionManager(width, height);
-
     setupThreads();
 }
 

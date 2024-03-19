@@ -1,6 +1,5 @@
 #pragma once
 #include <thread>
-#include "../CollisionManager.h"
 #include "Particle.h"
 #include "Wall.h"
 #include "Player.h"
@@ -40,7 +39,6 @@ public:
 
 	int getParticleCount() const { return current_max_particles; }
 	int getWallCount() const { return current_max_walls; }
-	CollisionManager getCollisionManager() { return *collision_manager; }
 
 	Player* getPlayer() { return &player; }
 
@@ -51,7 +49,6 @@ public:
 
 private:
 	int screen_width, screen_height;
-	CollisionManager* collision_manager;
 	
 	// Object Threads (16)
 	std::thread object_threads[THREAD_COUNT];
