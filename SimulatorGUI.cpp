@@ -204,45 +204,62 @@ void SimulatorGUI::ExplorerGUI()
 	ImGui::Spacing();
 
 	// Button to enter
-	if (ImGui::Button("Enter Explorer Mode")) {
-		std::cout << "Explorer Mode Entered" << std::endl;
-		explorer_mode = true;
+	if (explorer_mode) {
+		if (ImGui::Button("Exit Explorer Mode")) {
+			std::cout << "Explorer Mode Exited" << std::endl;
+			explorer_mode = false;
+		}
 	}
+	else {
+		if (ImGui::Button("Enter Explorer Mode")) {
+			std::cout << "Explorer Mode Entered" << std::endl;
+			explorer_mode = true;
+		}
 
-	// Debug buttons (uncomment to enable)
-	if (ImGui::Button("Top left explorer")) {
-		std::cout << "Explorer Mode Entered (Top Left)" << std::endl;
-		m_explorer_x = 0;
-		m_explorer_y = 0;
-		m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
-		explorer_mode = true;
-	}
+		ImGui::SameLine();
+		if (ImGui::Button("Center")) {
+			std::cout << "Explorer Mode Entered (Center)" << std::endl;
+			m_explorer_x = 640;
+			m_explorer_y = 360;
+			m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
+			explorer_mode = true;
+		}
 
-	ImGui::SameLine();
-	if (ImGui::Button("Top right explorer")) {
-		std::cout << "Explorer Mode Entered (Top Right)" << std::endl;
-		m_explorer_x = 1280;
-		m_explorer_y = 0;
-		m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
-		explorer_mode = true;
-	}
+		if (ImGui::Button("Top left")) {
+			std::cout << "Explorer Mode Entered (Top Left)" << std::endl;
+			m_explorer_x = 0;
+			m_explorer_y = 0;
+			m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
+			explorer_mode = true;
+		}
 
-	if (ImGui::Button("Bottom left explorer")) {
-		std::cout << "Explorer Mode Entered (Bottom Left)" << std::endl;
-		m_explorer_x = 0;
-		m_explorer_y = 720;
-		m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
-		explorer_mode = true;
-	}
+		ImGui::SameLine();
+		if (ImGui::Button("Top right")) {
+			std::cout << "Explorer Mode Entered (Top Right)" << std::endl;
+			m_explorer_x = 1280;
+			m_explorer_y = 0;
+			m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
+			explorer_mode = true;
+		}
 
-	ImGui::SameLine();
-	if (ImGui::Button("Bottom right explorer")) {
-		std::cout << "Explorer Mode Entered (Bottom Right)" << std::endl;
-		m_explorer_x = 1280;
-		m_explorer_y = 720;
-		m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
-		explorer_mode = true;
+		if (ImGui::Button("Bottom left")) {
+			std::cout << "Explorer Mode Entered (Bottom Left)" << std::endl;
+			m_explorer_x = 0;
+			m_explorer_y = 720;
+			m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
+			explorer_mode = true;
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Bottom right")) {
+			std::cout << "Explorer Mode Entered (Bottom Right)" << std::endl;
+			m_explorer_x = 1280;
+			m_explorer_y = 720;
+			m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
+			explorer_mode = true;
+		}
 	}
+	
 }
 
 void SimulatorGUI::ParticlesBatchGUI()

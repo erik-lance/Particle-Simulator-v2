@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../Globals.h"
 
 Player::Player(Position pos)
 {
@@ -130,37 +131,45 @@ bool Player::loadSpecifiedSprite(SDL_Renderer* renderer, const char* path)
  */
 void Player::draw(SDL_Renderer* renderer) const
 {
-	// Player must be drawn at the center of the screen
-	// Since the dimensions are 33 x 19, size of sprite
-	// must take up the center.
-	// 1280 / 33 = 39, 720 / 19 = 38
-	SDL_Rect destRect = { 640, 360, 39, 38 };
-	SDL_RenderCopy(renderer, sprite, NULL, &destRect);
+	if (explorer_mode) {
+		// Player must be drawn at the center of the screen
+		// Since the dimensions are 33 x 19, size of sprite
+		// must take up the center.
+		// 1280 / 33 = 39, 720 / 19 = 38
+		SDL_Rect destRect = { 640, 360, 39, 38 };
+		SDL_RenderCopy(renderer, sprite, NULL, &destRect);
 
-	// Draw walls if close to edge. They are filled rectangles
-	// that stretch to the edge of the screen. These also  based
-	// off of player position, depending how close player is to the edge
-	// Color: 42, 74, 115
-	SDL_SetRenderDrawColor(renderer, 42, 74, 115, 255);
-	Position rounded_pos = { (int)position.x, (int)position.y }; // Consider position is divisible by 4
+		// Draw walls if close to edge. They are filled rectangles
+		// that stretch to the edge of the screen. These also  based
+		// off of player position, depending how close player is to the edge
+		// Color: 42, 74, 115
+		SDL_SetRenderDrawColor(renderer, 42, 74, 115, 255);
+		Position rounded_pos = { (int)position.x, (int)position.y }; // Consider position is divisible by 4
 
-	if (rounded_pos.x < 16) {
-		// Draw left wall, width changes based on position
-		SDL_Rect leftWall = { 0, 0, 39*(16 - rounded_pos.x), 720 };
-		SDL_RenderFillRect(renderer, &leftWall);
-	} else if (rounded_pos.x > 1264) {
-		// Draw right wall, width changes based on position
-		SDL_Rect rightWall = { 1280 - (39 * (rounded_pos.x - 1265)), 0, 1280, 720 };
-		SDL_RenderFillRect(renderer, &rightWall);
+		if (rounded_pos.x < 16) {
+			// Draw left wall, width changes based on position
+			SDL_Rect leftWall = { 0, 0, 39 * (16 - rounded_pos.x), 720 };
+			SDL_RenderFillRect(renderer, &leftWall);
+		}
+		else if (rounded_pos.x > 1264) {
+			// Draw right wall, width changes based on position
+			SDL_Rect rightWall = { 1280 - (39 * (rounded_pos.x - 1265)), 0, 1280, 720 };
+			SDL_RenderFillRect(renderer, &rightWall);
+		}
+		if (rounded_pos.y < 9) {
+			// Draw top wall, height changes based on position
+			SDL_Rect topWall = { 0, 0, 1280, 38 * (9 - rounded_pos.y) };
+			SDL_RenderFillRect(renderer, &topWall);
+		}
+		else if (rounded_pos.y > 711) {
+			// Draw bottom wall, height changes based on position
+			SDL_Rect bottomWall = { 0, 720 - 38 * (rounded_pos.y - 712), 1280, 720 };
+			SDL_RenderFillRect(renderer, &bottomWall);
+		}
 	}
-	if (rounded_pos.y < 9) {
-		// Draw top wall, height changes based on position
-		SDL_Rect topWall = { 0, 0, 1280, 38*(9 - rounded_pos.y) };
-		SDL_RenderFillRect(renderer, &topWall);
-	}
-	else if (rounded_pos.y > 711) {
-		// Draw bottom wall, height changes based on position
-		SDL_Rect bottomWall = { 0, 720 - 38 * (rounded_pos.y - 712), 1280, 720 };
-		SDL_RenderFillRect(renderer, &bottomWall);
+	else {
+		// Draw player at their position as 9x9 sprite (centered)
+		SDL_Rect rect = { (int)position.x - 4, (int)position.y - 4, 9, 9 };
+		SDL_RenderCopy(renderer, sprite, NULL, &rect);
 	}
 }

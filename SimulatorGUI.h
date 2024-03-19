@@ -82,8 +82,8 @@ private:
 	int m_obstacle_start_y = 0;
 	int m_obstacle_end_y = 0;
 
-	int m_explorer_x = 0;
-	int m_explorer_y = 0;
+	int m_explorer_x = 640;
+	int m_explorer_y = 360;
 
 	// Batch Inputs
 	int m_batch_size = 0;

@@ -168,7 +168,7 @@ void ObjectManager::updateAndDrawParticlesMultiThreaded(double delta, SDL_Render
 	}
 
     // Draw player
-    if (explorer_mode) player.draw(renderer);
+    player.draw(renderer);
 }
 
 /**
