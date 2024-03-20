@@ -182,7 +182,6 @@ void ObjectManager::updateAndDrawParticlesIndices(int* indices, int count)
     for (int i = 0; i < count-1; i++)
 	{
         particles[indices[i]].updatePosition(*cur_delta);
-		// collision_manager->checkParticleCollisionsInCells(&particles[indices[i]]);
 		particles[indices[i]].handleScreenCollision();
 	}
 }

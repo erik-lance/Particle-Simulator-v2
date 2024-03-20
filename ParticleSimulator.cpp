@@ -163,9 +163,7 @@ int main()
 		if (drawGrid) object_manager.drawGridLines(renderer);
 
 		// Move the particles
-		// object_manager.updateAndDrawParticles(delta_time, renderer);
 		object_manager.updateAndDrawParticlesMultiThreaded(delta_time, renderer);
-		object_manager.drawWalls(renderer);
 
 		// Update FPS every 0.5 seconds
 		static double time = 0;
