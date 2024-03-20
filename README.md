@@ -7,8 +7,6 @@ A simulation project for Distributed Computing (STDISCM) course. This involves s
 - [imgui](https://github.com/ocornut/imgui)
 
 # How to run in Visual Studio
-1. Clone the repository
-2. Install the vcpkg dependencies through terminal
-	1. `vcpkg install`
-3. Make sure to generate CMake cache
-4. Run the project
+1. Clone the repository `git clone --recurse-submodules https://github.com/erik-lance/Particle-Simulator-v2.git`
+2. Go to `CMakeLists.txt` and hit CTRL+S to automatically start downloading required packages.
+3. Run the project
