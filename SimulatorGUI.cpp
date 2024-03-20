@@ -36,8 +36,12 @@ void SimulatorGUI::Update()
 	// Main Menu
 	MainMenuGUI();
 
-	// Particles Batch
-	ParticlesBatchGUI();
+	if (!explorer_mode) {
+		// Particles Batch
+		ParticlesBatchGUI();
+
+		
+	}
 
 	// Presets and Menu
 	PresetsAndMenuGUI();
@@ -122,72 +126,36 @@ void SimulatorGUI::ParticlesGUI()
 {
 	ImGui::Text("Particle");
 
-	// Clamp x and y to 0-1280 and 1-720
-	ImGui::InputInt("X", &m_particle_x);
-	ImGui::InputInt("Y", &m_particle_y);
-	InputClamp(m_particle_x, 0, 1280);
-	InputClamp(m_particle_y, 0, 720);
+	if (!explorer_mode) {
+		// Clamp x and y to 0-1280 and 1-720
+		ImGui::InputInt("X", &m_particle_x);
+		ImGui::InputInt("Y", &m_particle_y);
+		InputClamp(m_particle_x, 0, 1280);
+		InputClamp(m_particle_y, 0, 720);
 
-	// Clamp angle to 0-360
-	ImGui::InputInt("Angle", &m_particle_angle);
-	InputClamp(m_particle_angle, 0, 360);
+		// Clamp angle to 0-360
+		ImGui::InputInt("Angle", &m_particle_angle);
+		InputClamp(m_particle_angle, 0, 360);
 
-	// Clamp velocity to 1-50
-	ImGui::InputInt("Velocity", &m_particle_velocity);
-	InputClamp(m_particle_velocity, 1, MAX_VELOCITY);
+		// Clamp velocity to 1-50
+		ImGui::InputInt("Velocity", &m_particle_velocity);
+		InputClamp(m_particle_velocity, 1, MAX_VELOCITY);
 
-	ImGui::Spacing();
+		ImGui::Spacing();
+	
+		if (ImGui::Button("Add Particle")) {
+			std::cout << "Particle Added" << std::endl;
 
-	if (ImGui::Button("Add Particle")) {
-		std::cout << "Particle Added" << std::endl;
+			m_object_manager->addParticle(m_particle_x, m_particle_y, m_particle_angle, m_particle_velocity);
 
-		m_object_manager->addParticle(m_particle_x, m_particle_y, m_particle_angle, m_particle_velocity);
-
-		// Increment particle id
-		m_particle_id++;
+			// Increment particle id
+			m_particle_id++;
+		}
 	}
-}
-
-void SimulatorGUI::ObstaclesGUI()
-{
-	ImGui::Text("Obstacle");
-
-	// Clamp start_x and start_y to 0-1280 and 1-720
-	ImGui::InputInt("Start X", &m_obstacle_start_x);
-	ImGui::InputInt("Start Y", &m_obstacle_start_y);
-	InputClamp(m_obstacle_start_x, 0, 1280);
-	InputClamp(m_obstacle_start_y, 0, 720);
-
-	// Clamp end_x and end_y to 0-1280 and 1-720
-	ImGui::InputInt("End X", &m_obstacle_end_x);
-	ImGui::InputInt("End Y", &m_obstacle_end_y);
-	InputClamp(m_obstacle_end_x, 0, 1280);
-	InputClamp(m_obstacle_end_y, 0, 720);
-
-	if (ImGui::Button("Add Wall")) {
-		std::cout << "Wall Added" << std::endl;
-		Line line = Line();
-		line.start.x = m_obstacle_start_x;
-		line.start.y = m_obstacle_start_y;
-		line.end.x = m_obstacle_end_x;
-		line.end.y = m_obstacle_end_y;
-
-		// Calculate angle of the line in radians
-		double dx = line.end.x - line.start.x;
-		double dy = line.end.y - line.start.y;
-		line.angle = atan2(dy, dx);
-
-		// Normalize the angle
-		line.angle = normalizeAngle(line.angle);
-
-		std::cout << "Wall: " << line.start.x << " " << line.start.y << " " << line.end.x << " " << line.end.y << std::endl;
-		std::cout << "Wall Angle: " << line.angle << std::endl;
-		m_object_manager->addWall(line);
-
-		// Increment obstacle id
-		m_obstacle_id++;
+	else {
+		ImGui::Separator();
+		ImGui::TextWrapped("Exit explorer mode to add particles");
 	}
-
 }
 
 void SimulatorGUI::ExplorerGUI()
@@ -460,87 +428,89 @@ void SimulatorGUI::PresetsAndMenuGUI()
 	ImGui::SetWindowPos(ImVec2(presets_pos_x, presets_pos_y));
 	ImGui::SetWindowSize(ImVec2(presets_size_x, presets_size_y));
 
-	// Presets
-	if (ImGui::Button("Preset 1")) {
-		std::cout << "Preset 1" << std::endl;
-		
-		// Set Method 1 Preset
-		method_one_start_x = 255;
-		method_one_start_y = 255;
-		method_one_end_x = 1024;
-		method_one_end_y = 512;
-		method_one_angle = 30;
-		method_one_velocity = 250;
+	if (!explorer_mode) {
+		// Presets
+		if (ImGui::Button("Preset 1")) {
+			std::cout << "Preset 1" << std::endl;
 
-		// Set Method 2 Preset
-		method_two_start_angle = 0;
-		method_two_end_angle = 359;
-		method_two_start_x = 255;
-		method_two_start_y = 255;
-		method_two_velocity = 250;
+			// Set Method 1 Preset
+			method_one_start_x = 255;
+			method_one_start_y = 255;
+			method_one_end_x = 1024;
+			method_one_end_y = 512;
+			method_one_angle = 30;
+			method_one_velocity = 250;
 
-		// Set Method 3 Preset
-		method_three_start_x = 255;
-		method_three_start_y = 255;
-		method_three_angle = 0;
-		method_three_start_velocity = 250;
-		method_three_end_velocity = 500;
-	}
+			// Set Method 2 Preset
+			method_two_start_angle = 0;
+			method_two_end_angle = 359;
+			method_two_start_x = 255;
+			method_two_start_y = 255;
+			method_two_velocity = 250;
 
-	ImGui::SameLine();
+			// Set Method 3 Preset
+			method_three_start_x = 255;
+			method_three_start_y = 255;
+			method_three_angle = 0;
+			method_three_start_velocity = 250;
+			method_three_end_velocity = 500;
+		}
 
-	if (ImGui::Button("Preset 2")) {
-		std::cout << "Preset 2" << std::endl;
+		ImGui::SameLine();
 
-		// Set Method 1 Preset
-		method_one_start_x = 128;
-		method_one_start_y = 128;
-		method_one_end_x = 1024;
-		method_one_end_y = 512;
-		method_one_angle = 315;
-		method_one_velocity = 250;
+		if (ImGui::Button("Preset 2")) {
+			std::cout << "Preset 2" << std::endl;
 
-		// Set Method 2 Preset
-		method_two_start_angle = 0;
-		method_two_end_angle = 180;
-		method_two_start_x = 512;
-		method_two_start_y = 512;
-		method_two_velocity = 128;
+			// Set Method 1 Preset
+			method_one_start_x = 128;
+			method_one_start_y = 128;
+			method_one_end_x = 1024;
+			method_one_end_y = 512;
+			method_one_angle = 315;
+			method_one_velocity = 250;
 
-		// Set Method 3 Preset
-		method_three_start_x = 255;
-		method_three_start_y = 512;
-		method_three_angle = 30;
-		method_three_start_velocity = 250;
-		method_three_end_velocity = 1000;
-	}
+			// Set Method 2 Preset
+			method_two_start_angle = 0;
+			method_two_end_angle = 180;
+			method_two_start_x = 512;
+			method_two_start_y = 512;
+			method_two_velocity = 128;
 
-	ImGui::SameLine();
+			// Set Method 3 Preset
+			method_three_start_x = 255;
+			method_three_start_y = 512;
+			method_three_angle = 30;
+			method_three_start_velocity = 250;
+			method_three_end_velocity = 1000;
+		}
 
-	if (ImGui::Button("Preset 3")) {
-		std::cout << "Preset 3" << std::endl;
+		ImGui::SameLine();
 
-		// Set Method 1 Preset
-		method_one_start_x = 128;
-		method_one_start_y = 128;
-		method_one_end_x = 1024;
-		method_one_end_y = 512;
-		method_one_angle = 60;
-		method_one_velocity = 500;
+		if (ImGui::Button("Preset 3")) {
+			std::cout << "Preset 3" << std::endl;
 
-		// Set Method 2 Preset
-		method_two_start_angle = 90;
-		method_two_end_angle = 270;
-		method_two_start_x = 1024;
-		method_two_start_y = 512;
-		method_two_velocity = 250;
+			// Set Method 1 Preset
+			method_one_start_x = 128;
+			method_one_start_y = 128;
+			method_one_end_x = 1024;
+			method_one_end_y = 512;
+			method_one_angle = 60;
+			method_one_velocity = 500;
 
-		// Set Method 3 Preset
-		method_three_start_x = 255;
-		method_three_start_y = 512;
-		method_three_angle = 45;
-		method_three_start_velocity = 250;
-		method_three_end_velocity = 1000;
+			// Set Method 2 Preset
+			method_two_start_angle = 90;
+			method_two_end_angle = 270;
+			method_two_start_x = 1024;
+			method_two_start_y = 512;
+			method_two_velocity = 250;
+
+			// Set Method 3 Preset
+			method_three_start_x = 255;
+			method_three_start_y = 512;
+			method_three_angle = 45;
+			method_three_start_velocity = 250;
+			method_three_end_velocity = 1000;
+		}
 	}
 
 	// Exit Button float bottom right
