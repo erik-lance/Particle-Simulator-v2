@@ -181,6 +181,7 @@ void SimulatorGUI::ExplorerGUI()
 	else {
 		if (ImGui::Button("Enter Explorer Mode")) {
 			std::cout << "Explorer Mode Entered" << std::endl;
+			m_object_manager->getPlayer()->place(Position(m_explorer_x, m_explorer_y));
 			explorer_mode = true;
 		}
 
