@@ -61,7 +61,9 @@ void Player::move(int dir, double deltaTime)
 bool Player::loadSprite(SDL_Renderer* renderer)
 {
 	// Load Sprite randomly from 1-4
+	srand(time(NULL));
 	int num = rand() % 4 + 1;
+	
 	char* filePath = new char[100];
 
 	switch (num)
