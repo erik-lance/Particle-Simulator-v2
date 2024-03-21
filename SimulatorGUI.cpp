@@ -163,8 +163,10 @@ void SimulatorGUI::ExplorerGUI()
 	ImGui::Text("Explorer");
 
 	// Switch to Explorer Mode 
-	ImGui::InputInt("Explorer X", &m_explorer_x);
-	ImGui::InputInt("Explorer Y", &m_explorer_y);
+	if (!explorer_mode) {
+		ImGui::InputInt("Explorer X", &m_explorer_x);
+		ImGui::InputInt("Explorer Y", &m_explorer_y);
+	}
 	// Clamp x and y to 0-1280 and 1-720
 	InputClamp(m_explorer_x, 0, 1280);
 	InputClamp(m_explorer_y, 0, 720);
