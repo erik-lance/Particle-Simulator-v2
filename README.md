@@ -1,5 +1,5 @@
 # Particle Simulator
-A simulation project for Distributed Computing (STDISCM) course. This involves simulating particles in a 2D space with elastic collisions. User must be able to add particles and walls to the simulation. The simulation must be able to calculate the collisions between particles and walls and between particles themselves. The simulation must be able to run in parallel with threading.
+A simulation project for Distributed Computing (STDISCM) course. This involves simulating particles in a 2D space with elastic collisions. User must be able to add particles and enter explorer mode as a sprite to view the particles from the periphery of an object the size of a particle. This is done in a 33x19 view.
 
 # Packages used
 - [glad](https://github.com/Dav1dde/glad)
